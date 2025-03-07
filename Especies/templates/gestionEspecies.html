@@ -16,7 +16,7 @@
         <h2>Gestión de Especies</h2>
         <div class="card">
             <div class="card-body">
-                <form action="/create_especie/" method="POST" enctype="multipart/form-data">
+                <form action="/especies/create_especie/" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
                         <input type="text" class="form-control" name="nombre" class="form-control" placeholder="Nombre" maxlength="50" required>
@@ -55,7 +55,7 @@
                         <td>{{especie.descripcion}}</td>
                         <td><img src="{{ especie.imagen.url }}" alt="imagen" width="100" height="100"></td>
                         <td><a href="edit_especie/{{especie.cve_especie}}" class="btn btn-info">Editar</a></td>
-                        <td><a href="delete_especie/{{especie.cve_especie}}" class="btn btn-danger btnDelete">Borrar</a></td>
+                        <td><a href="/especies/delete_especie/{{especie.cve_especie}}" class="btn btn-danger btnDelete">Borrar</a></td>
                     </tr>
                     {% empty %}
                     <tr>

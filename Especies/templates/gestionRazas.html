@@ -1,3 +1,72 @@
 {% extends './plantilla.html' %}
-{%block body%}
-{%%endblock%}
+{% block body %}
+<div class="row">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <strong class="text-dark">{{ message }}</strong>
+    </div> 
+    {% endfor %}
+    {% endif %} 
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <h2>Gestión de Razas</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'create_raza' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="nombre" placeholder="Nombre" maxlength="50" required>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" name="especie" required>
+                            <option value="" disabled selected>Seleccione una especie</option>
+                            {% for especie in especies %}
+                            <option value="{{ especie.cve_especie }}">{{ especie.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="file" class="form-control" name="imagen" placeholder="Imagen" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>    
+                </form>    
+            </div>    
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+        <h1>Tabla de Razas</h1>
+        <div class="table-responsive py-2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Clave</th>
+                        <th>Nombre</th>
+                        <th>Especie</th>
+                        <th>Imagen</th>
+                        <th colspan="2">Opciones</th>
+                    </tr>
+                </thead> 
+                <tbody>
+                    {% for raza in razas %}
+                    <tr>
+                        <td>{{ raza.cve_raza }}</td>
+                        <td>{{ raza.nombre }}</td>
+                        <td>{{ raza.cve_especie.nombre }}</td>
+                        <td><img src="{{ raza.foto.url }}" alt="imagen" width="100" height="100"></td>
+                        <td><a href="edit_raza/{{ raza.cve_raza }}" class="btn btn-info">Editar</a></td>
+                        <td><a href="delete_raza/{{ raza.cve_raza }}" class="btn btn-danger btnDelete">Borrar</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No hay Razas</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>       
+            </table>
+        </div>    
+    </div>
+</div> 
+{% endblock %}
