@@ -1,0 +1,60 @@
+{% extends './plantilla.html' %}
+{% block body %}
+<div class="row">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <strong class="text-dark">{{ message }}</strong>
+    </div> 
+    {% endfor %}
+    {% endif %} 
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <h2>Edición de Mascotas</h2>
+            <div class="card">
+                <div class="card-body">
+                    <form action="{% url 'update_mascota' mascota.cve_mascota %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="clave" value="{{mascota.cve_mascota}}" class="form-control" placeholder="clave" maxlength="50" readonly required >
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="nombre" value="{{mascota.nombre}}" placeholder="Nombre" maxlength="50" required>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="raza" required>
+                                <option value="" disabled>Seleccione una raza</option>
+                                {% for raza in razas %}
+                                <option value="{{ raza.cve_raza }}" {% if raza.cve_raza == mascota.cve_raza.cve_raza %}selected{% endif %}>{{ raza.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="peso" value="{{mascota.peso}}"  placeholder="peso" maxlength="50" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="date" class="form-control" name="fecha" value="{{ mascota.fecha|date:'Y-m-d' }}" required>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="sexo" required>
+                                <option value="" disabled>Seleccione el sexo</option>
+                                <option value="True" {% if mascota.sexo %}selected{% endif %}>Masculino</option>
+                                <option value="False" {% if not mascota.sexo %}selected{% endif %}>Femenino</option>
+                            </select>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="imagen">Imagen Actual:</label><br>
+                            <img src="{{ mascota.imagen.url }}" alt="imagen" class="img-fluid" style="max-width: 300px; height: auto;"><br><br>
+                            <input type="file" class="form-control" name="imagen" placeholder="Imagen">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>    
+                    </form>    
+                </div>    
+            </div>
+        </div>
+    </div>
+</div> 
+{% endblock %}

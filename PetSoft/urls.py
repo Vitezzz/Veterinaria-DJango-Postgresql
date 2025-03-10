@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('mascotas/', include('Mascotas.urls') ),
     path('especies/', include('Especies.urls')),
     #path('', include('Especies.urls')), -- para que sin poner slash vaya a la pagina
 ] 

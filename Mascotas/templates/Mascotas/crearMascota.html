@@ -1,0 +1,51 @@
+{%extends "./plantilla.html"%}
+
+{%block title%} Mascotas {%endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2>Gestión de Macotas</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'create_mascota' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="nombre"  placeholder="Nombre" maxlength="50" required>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" name="raza" required>
+                            <option value="" disabled selected>Seleccione una raza</option>
+                            {% for raza in razas %}
+                            <option value="{{ raza.cve_raza }}">{{ raza.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="peso"  placeholder="peso" maxlength="50" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="datetime-local" class="form-control" name="fecha" required>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" name="sexo" required>
+                            <option value="" disabled selected>Seleccione el sexo</option>
+                            <option value="True">Masculino</option>
+                            <option value="False">Femenino</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="file" class="form-control" name="imagen" placeholder="Imagen" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>    
+                </form>    
+            </div>    
+        </div>
+    </div>
+</div>
+</div> 
+
+{%endblock%}
