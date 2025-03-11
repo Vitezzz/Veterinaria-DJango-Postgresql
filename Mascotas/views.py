@@ -10,9 +10,6 @@ def home(request):
     razas = Razas.objects.filter(activo=True).order_by('cve_raza')
     return render(request, 'Mascotas/gestionMascotas.html', {"mascotas": mascotas})
 
-def create_pet (request):
-    razas = Razas.objects.filter(activo=True).order_by('cve_raza')
-    return render (request, 'Mascotas/crearMascota.html', {"razas": razas})
 
 def create_mascota(request):
     if request.method == "POST":
