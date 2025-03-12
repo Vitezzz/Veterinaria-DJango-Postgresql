@@ -36,4 +36,34 @@ class Personas(models.Model):
     class Meta:
         managed = False
         db_table = 'personas'
+
+
+
+class Turnos(models.Model):
+    cve_turno = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'turnos'
+        
+class Veterinarios(models.Model):
+    cve_veterinarios = models.OneToOneField(Personas, on_delete=models.DO_NOTHING, primary_key=True, db_column='cve_veterinarios')
+    fecha_ingreso = models.DateField(blank=True, null=True)
+    cve_turno = models.ForeignKey('Turnos', models.DO_NOTHING, db_column='cve_turno', blank=True, null=True)
+    activo = models.BooleanField(default=True)
+
+    class Meta:
+        managed = False
+        db_table = 'veterinarios'
+        
+class Trabajadores(models.Model):
+    cve_trabajador = models.AutoField(primary_key=True)
+    cve_turno = models.ForeignKey('Turnos', models.DO_NOTHING, db_column='cve_turno', blank=True, null=True)
+    nombre = models.CharField(max_length=100, blank=True, null=True)
+    activo = models.BooleanField(default=True)
+
+    class Meta:
+        managed = False
+        db_table = 'trabajadores'
         

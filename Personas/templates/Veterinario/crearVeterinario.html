@@ -1,0 +1,51 @@
+{%extends "plantilla.html"%}
+
+{%block title%} Personas {%endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2>Gestión de Veterinario</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-dismissible alert-success">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong class="text-dark">{{ message }}</strong>
+                </div> 
+            {% endfor %}
+        {% endif %} 
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'create_veterinario' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <select class="form-control" name="persona" required>
+                            <option value="" disabled selected>Seleccione una Persona</option>
+                            {% for persona in personas %}
+                            <option value="{{ persona.cve_persona }}">{{ persona.nombre }} {{ persona.paterno }} {{ persona.materno }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" name="turno" required>
+                            <option value="" disabled selected>Seleccione un Turno</option>
+                            {% for turno in turnos %}
+                            <option value="{{ turno.cve_turno }}">{{ turno.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="date" class="form-control" name="fecha" placeholder="Fecha" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>    
+                </form>    
+            </div>    
+        </div>
+    </div>
+</div>
+</div> 
+
+{%endblock%}

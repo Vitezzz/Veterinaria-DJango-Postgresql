@@ -1,0 +1,52 @@
+{% extends "plantilla.html" %}
+
+{% block title %} Personas {% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2>Edición de Veterinario</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-dismissible alert-success">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong class="text-dark">{{ message }}</strong>
+                </div> 
+            {% endfor %}
+        {% endif %} 
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'update_veterinario' veterinarios.cve_veterinarios.cve_persona %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <select class="form-control" name="persona" required>
+                            <option value="" disabled selected>Seleccione una Persona</option>
+                            {% for persona in personas %}
+                            <option value="{{ persona.cve_persona }}" {% if persona.cve_persona == veterinarios.cve_veterinarios.cve_persona %}selected{% endif %}>
+                                {{ persona.nombre }} {{ persona.paterno }} {{ persona.materno }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" name="turno" required>
+                            <option value="" disabled>Seleccione un turno</option>
+                                {% for turno in turnos %}
+                                <option value="{{ turno.cve_turno }}" {% if turno.cve_turno == veterinarios.cve_turno.cve_turno %}selected{% endif %}>{{ turno.nombre }}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="date" class="form-control" name="fecha" placeholder="Fecha" value="{{ veterinarios.fecha_ingreso|date:'Y-m-d' }}" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>    
+                </form>    
+            </div>    
+        </div>
+    </div>
+</div>
+</div> 
+
+{% endblock %}
