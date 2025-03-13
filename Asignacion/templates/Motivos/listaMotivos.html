@@ -1,0 +1,39 @@
+{% extends "plantilla.html" %}
+
+{% block title %} Motivos {% endblock %}
+
+{% block body %}
+
+<div class="card mt-5">
+    <div class="card-header">
+        <h2>Motivos</h2>
+        <a href="{% url 'create_motivo' %}" class="btn btn-success">Agregar Motivo</a>
+    </div>    
+    <div class="card-body">
+        <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Clave</th>
+                <th scope="col">Nombre</th>
+                <th colspan="2">Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for m in motivos %}
+                <tr>
+                    <td>{{ m.cve_motivo }}</td>
+                    <td>{{ m.nombre }}</td>
+                    <td><a href="{% url 'update_motivo' m.cve_motivo %}" class="btn btn-info">Editar</a></td>
+                    <td><a href="{% url 'delete_motivo' m.cve_motivo %}" class="btn btn-danger btnDelete">Borrar</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">No hay motivos</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+    </div>
+</div>    
+
+{% endblock %}

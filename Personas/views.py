@@ -113,4 +113,58 @@ def delete_veterinario(request, cve_veterinarios):
     veterinarios.save()
     messages.success(request, 'Veterinario eliminado correctamente')
 
-    return redirect('/personas/veterinarios')    
+    return redirect('/personas/veterinarios')   
+
+
+def listaTrabajadores(request):
+    trabajadores = Trabajadores.objects.filter(activo=True).select_related('cve_trabajador', 'cve_turno').order_by('cve_trabajador')
+    return render(request, 'Trabajadores/listadoTrabajadores.html', {"trabajadores": trabajadores}) 
+
+def create_trabajador(request):
+    if request.method == "POST":
+        cve_turno = request.POST['turno']
+        turnos = Turnos.objects.get(cve_turno=cve_turno)
+        cve_persona = request.POST['persona']
+        personas = Personas.objects.get(cve_persona=cve_persona)
+        
+        # Verificar si la persona ya está registrada como veterinario
+        if Trabajadores.objects.filter(cve_trabajador=personas).exists():
+            messages.error(request, 'La persona ya está registrada como veterinario')
+            return redirect('create_trabajador')
+        
+        trabajadores = Trabajadores(
+            cve_trabajador=personas,
+            cve_turno=turnos,
+            nombre=request.POST['puesto']
+        )
+        trabajadores.save()
+        messages.success(request, 'Trabajador cargado correctamente')
+        return redirect('/personas/trabajadores/')
+    else:
+        turnos = Turnos.objects.all().order_by('cve_turno')
+        personas = Personas.objects.filter(activo=True).order_by('cve_persona')
+        return render(request, 'Trabajadores/crearTrabajador.html', {"turnos": turnos, "personas": personas})
+    
+def update_trabajador(request, cve_trabajador):
+    trabajadores = get_object_or_404(Trabajadores, cve_trabajador=cve_trabajador)
+    if request.method == "POST":
+        cve_turno = request.POST['turno']
+        turnos = Turnos.objects.get(cve_turno=cve_turno)
+        nombre = request.POST['puesto']
+        trabajadores.cve_turno = turnos
+        trabajadores.nombre = nombre
+        trabajadores.save()
+        messages.success(request, 'Trabajador actualizado correctamente')
+        return redirect('/personas/trabajadores/')
+    else:
+        turnos = Turnos.objects.all().order_by('cve_turno')
+        personas = Personas.objects.filter(activo=True).order_by('cve_persona')
+        return render(request, 'Trabajadores/editarTrabajador.html', {"trabajadores": trabajadores, "turnos": turnos, "personas": personas})
+    
+def delete_trabajador(request, cve_trabajador):
+    trabajadores = Trabajadores.objects.get(cve_trabajador=cve_trabajador)
+    trabajadores.activo = False
+    trabajadores.save()
+    messages.success(request, 'Trabajador eliminado correctamente')
+
+    return redirect('/personas/trabajadores')   

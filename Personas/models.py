@@ -58,7 +58,7 @@ class Veterinarios(models.Model):
         db_table = 'veterinarios'
         
 class Trabajadores(models.Model):
-    cve_trabajador = models.AutoField(primary_key=True)
+    cve_trabajador = models.OneToOneField(Personas, models.DO_NOTHING, db_column='cve_trabajador', primary_key=True)
     cve_turno = models.ForeignKey('Turnos', models.DO_NOTHING, db_column='cve_turno', blank=True, null=True)
     nombre = models.CharField(max_length=100, blank=True, null=True)
     activo = models.BooleanField(default=True)

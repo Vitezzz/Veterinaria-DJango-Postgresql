@@ -6,8 +6,8 @@
 
 <div class="card mt-5">
     <div class="card-header">
-        <h2>Personas</h2>
-        <a href="{% url 'create_trabajador'%}" class="btn btn-success">Agregar Persona</a>
+        <h2>Trabajadores</h2>
+        <a href="{% url 'create_trabajador' %}" class="btn btn-success">Agregar Trabajador</a>
     </div>    
     <div class="card-body">
         <table class="table">
@@ -28,23 +28,25 @@
               </tr>
             </thead>
             <tbody>
-                {%for persona in personas%}
+                {%for t in trabajadores%}
                 <tr>
-                    <td>{{persona.cve_persona}}</td>
-                    <td>{{persona.nombre}}</td>
-                    <td>{{persona.paterno}}</td>
-                    <td>{{persona.materno}}</td>
-                    <td>{{persona.cve_municipio.nombre}}</td>
-                    <td>{{persona.direccion}}</td>
-                    <td>{{persona.correo}}</td>
-                    <td>{{persona.telefono}}</td>
-                    <td><img src="{{ persona.imagen.url }}" alt="imagen" width="100" height="100"></td>
-                    <td><a href="update_persona/{{persona.cve_persona}}" class="btn btn-info">Editar</a></td>
-                    <td><a href="delete_persona/{{persona.cve_persona}}" class="btn btn-danger btnDelete">Borrar</a></td>
+                    <td>{{ t.cve_trabajador.cve_persona }}</td>
+                    <td>{{ t.cve_trabajador.nombre }}</td>
+                    <td>{{ t.cve_trabajador.paterno }}</td>
+                    <td>{{ t.cve_trabajador.materno }}</td>
+                    <td>{{ t.cve_trabajador.cve_municipio.nombre }}</td>
+                    <td>{{ t.cve_trabajador.direccion }}</td>
+                    <td>{{ t.cve_trabajador.correo }}</td>
+                    <td>{{ t.cve_trabajador.telefono }}</td>
+                    <td>{{ t.cve_turno.nombre }}</td>
+                    <td>{{ t.nombre }}</td>
+                    <td><img src="{{ t.cve_trabajador.imagen.url }}" alt="imagen" width="100" height="100"></td>
+                    <td><a href="{% url 'update_trabajador' t.cve_trabajador.cve_persona %}" class="btn btn-info">Editar</a></td>
+                    <td><a href="{% url 'delete_trabajador' t.cve_trabajador.cve_persona %}" class="btn btn-danger btnDelete">Borrar</a></td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="8">No hay Personas</td>
+                    <td colspan="8">No hay trabajadores</td>
                 </tr>
                 {%endfor%}
             </tbody>

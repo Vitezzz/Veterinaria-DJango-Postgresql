@@ -1,0 +1,52 @@
+{% extends "plantilla.html" %}
+
+{% block title %} Personas {% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2>Edición de Veterinario</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-dismissible alert-success">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong class="text-dark">{{ message }}</strong>
+                </div> 
+            {% endfor %}
+        {% endif %} 
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'update_trabajador' trabajadores.cve_trabajador.cve_persona %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="persona" value="{{ trabajadores.cve_trabajador.nombre }}
+                        {{ trabajadores.cve_trabajador.paterno }} {{ trabajadores.cve_trabajador.materno }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" name="turno" required>
+                            <option value="" disabled>Seleccione un turno</option>
+                                {% for turno in turnos %}
+                                <option value="{{ turno.cve_turno }}" {% if turno.cve_turno == veterinarios.cve_turno.cve_turno %}selected{% endif %}>{{ turno.nombre }}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" name="puesto" required>
+                            <option value="" disabled {% if not trabajadores.nombre %}selected{% endif %}>Seleccione un Puesto</option>
+                            <option value="asistente" {% if trabajadores.nombre == "asistente" %}style="display:none;"{% endif %}>Asistente</option>
+                            <option value="recepcionista" {% if trabajadores.nombre == "recepcionista" %}style="display:none;"{% endif %}>Recepcionista</option>
+                            <option value="limpieza" {% if trabajadores.nombre == "limpieza" %}style="display:none;"{% endif %}>Limpieza</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>    
+                </form>    
+            </div>    
+        </div>
+    </div>
+</div>
+</div> 
+
+{% endblock %}

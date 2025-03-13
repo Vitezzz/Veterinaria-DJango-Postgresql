@@ -25,7 +25,7 @@ urlpatterns = [
     path('mascotas/', include('Mascotas.urls') ),
     path('especies/', include('Especies.urls')),
     path('personas/', include('Personas.urls')),
-
+    path('asignacion/', include('Asignacion.urls')),
     #path('', include('Especies.urls')), -- para que sin poner slash vaya a la pagina
 ] 
 
